@@ -13,10 +13,10 @@ if (-not [String]::IsNullOrWhiteSpace($InputScope)) {
 
 $ProjectScope = "ProjectScope."
 
-Write-Host "Your new com.$($InputScope.ToLower())$($InputName.ToLower()) project is being created..."
+Write-Host "Your new $($InputScope.ToLower())$($InputName.ToLower()) project is being created..."
 Remove-Item -Path ".\Readme.md"
 Remove-Item -Path ".\$ProjectScope$ProjectName\Assets\Samples"
-$oldPackageRoot = ".\$ProjectScope$ProjectName\Packages\com.$($ProjectScope.ToLower())$($ProjectName.ToLower())"
+$oldPackageRoot = ".\$ProjectScope$ProjectName\Packages\$($ProjectScope.ToLower())$($ProjectName.ToLower())"
 Copy-Item -Path "$oldPackageRoot\Documentation~\Readme.md" `
   -Destination ".\Readme.md"
 Rename-Item -Path "$oldPackageRoot\Runtime\$ProjectScope$ProjectName.asmdef" `
@@ -28,7 +28,7 @@ Rename-Item -Path "$oldPackageRoot\Tests\$ProjectScope$ProjectName.Tests.asmdef"
 Rename-Item -Path "$oldPackageRoot\Samples~\Demo\$ProjectScope$ProjectName.Demo.asmdef" `
   -NewName "$InputScope$InputName.Tests.asmdef"
 Rename-Item -Path "$oldPackageRoot" `
-  -NewName "com.$($InputScope.ToLower())$($InputName.ToLower())"
+  -NewName "$($InputScope.ToLower())$($InputName.ToLower())"
 Rename-Item -Path ".\$ProjectScope$ProjectName" `
   -NewName ".\$InputScope$InputName"
 
@@ -138,6 +138,6 @@ Get-ChildItem -Path "*"-File -Recurse -Exclude $excludes | ForEach-Object -Proce
 }
 
 Set-Location ".\$InputScope$InputName\Assets"
-cmd /c mklink /D "Samples" "..\..\$InputScope$InputName\Packages\com.$($InputScope.ToLower())$($InputName.ToLower())\Samples~"
+cmd /c mklink /D "Samples" "..\..\$InputScope$InputName\Packages\$($InputScope.ToLower())$($InputName.ToLower())\Samples~"
 Set-Location "..\.."
 Remove-Item -Path "InitializeTemplate.ps1"
