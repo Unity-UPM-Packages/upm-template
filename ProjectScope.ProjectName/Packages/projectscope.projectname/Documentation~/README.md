@@ -1,33 +1,27 @@
 # com.projectscope.projectname
 
-[![Discord](https://img.shields.io/discord/855294214065487932.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xQgMW9ufN4) [![openupm](https://img.shields.io/npm/v/com.projectscope.projectname?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.projectscope.projectname/) [![openupm](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=downloads&query=%24.downloads&suffix=%2Fmonth&url=https%3A%2F%2Fpackage.openupm.com%2Fdownloads%2Fpoint%2Flast-month%2Fcom.projectscope.projectname)](https://openupm.com/packages/com.projectscope.projectname/)
 
 A ProjectScope.ProjectName package for the [Unity](https://unity.com/) Game Engine.
 
 ## Installing
 
-Requires Unity 2021.3 LTS or higher.
+Requires Unity 2022.3.46 LTS or higher.
 
-The recommended installation method is though the unity package manager and [OpenUPM](https://openupm.com/packages/com.projectscope.projectname).
+The recommended installation method is though the unity package manager.
 
 ### Via Unity Package Manager and OpenUPM
 
 - Open your Unity project settings
 - Select the `Package Manager`
-![scoped-registries](images/package-manager-scopes.png)
+![scoped-registries](https://europe1.discourse-cdn.com/unity/original/3X/8/6/86d23e43ae16b26badf2072280c9d4cbe03d568e.png)
 - Add the OpenUPM package registry:
-  - Name: `OpenUPM`
-  - URL: `https://package.openupm.com`
+  - Name: `TripSoft`
+  - URL: `https://verdaccio.tripdev.io`
   - Scope(s):
     - `com.projectscope.projectname`
 - Open the Unity Package Manager window
 - Change the Registry from Unity to `My Registries`
 - Add the `ProjectScope.ProjectName` package
-
-### Via Unity Package Manager and Git url
-
-- Open your Unity Package Manager
-- Add package from git url: `https://github.com/ProjectAuthor/com.projectscope.projectname.git#upm`
 
 ## Documentation
 
