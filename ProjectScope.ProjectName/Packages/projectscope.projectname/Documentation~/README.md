@@ -18,7 +18,7 @@ The recommended installation method is though the unity package manager.
   - Name: `TripSoft`
   - URL: `https://verdaccio.tripdev.io`
   - Scope(s):
-    - `projectscope.projectname`
+    - `projectscope`
 - Open the Unity Package Manager window
 - Change the Registry from Unity to `My Registries`
 - Add the `ProjectScope.ProjectName` package
