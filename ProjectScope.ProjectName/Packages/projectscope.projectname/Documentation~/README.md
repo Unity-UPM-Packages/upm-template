@@ -1,4 +1,4 @@
-# com.projectscope.projectname
+# projectscope.projectname
 
 
 A ProjectScope.ProjectName package for the [Unity](https://unity.com/) Game Engine.
