@@ -7,11 +7,15 @@ $InputName = Read-Host "Enter a name for your new project"
 $ProjectName = "ProjectName"
 $InputScope = Read-Host "Enter a scope for your new project (optional)"
 
+$InputScopeX 
+
 if (-not [String]::IsNullOrWhiteSpace($InputScope)) {
+  $InputScopeX = "$InputScope"
   $InputScope = "$InputScope."
 }
 
 $ProjectScope = "ProjectScope."
+$ProjectScopeX = "projectscope-x"
 
 Write-Host "Your new $($InputScope.ToLower())$($InputName.ToLower()) project is being created..."
 Remove-Item -Path ".\Readme.md"
@@ -52,6 +56,13 @@ Get-ChildItem -Path "*"-File -Recurse -Exclude $excludes | ForEach-Object -Proce
       # Rename all PascalCase instances
       if ($fileContent -cmatch $ProjectName) {
         $fileContent -creplace $ProjectName, $InputName | Set-Content $($_.FullName) -NoNewline
+        $updated = $true
+      }
+
+      $fileContent = Get-Content $($_.FullName) -Raw
+
+      if ($fileContent -cmatch $ProjectScope) {
+        $fileContent -creplace $ProjectScopeX, $InputScopeX | Set-Content $($_.FullName) -NoNewline
         $updated = $true
       }
 
