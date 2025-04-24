@@ -148,7 +148,63 @@ Get-ChildItem -Path "*"-File -Recurse -Exclude $excludes | ForEach-Object -Proce
   }
 }
 
-Set-Location ".\$InputScope$InputName\Assets"
-cmd /c mklink /D "Samples" "..\..\$InputScope$InputName\Packages\$($InputScope.ToLower())$($InputName.ToLower())\Samples~"
-Set-Location "..\.."
+# Move all contents from project directory to root directory
+Write-Host "Moving all project files to the root directory..."
+
+# Define paths
+$sourcePath = (Resolve-Path ".\$InputScope$InputName").Path
+$rootPath = (Resolve-Path ".\").Path
+
+Write-Host "Source path: $sourcePath"
+Write-Host "Root path: $rootPath"
+
+# First, copy the Assets folder
+if (Test-Path "$sourcePath\Assets") {
+    Write-Host "Moving Assets folder..."
+    if (-not (Test-Path "$rootPath\Assets")) {
+        New-Item -Path "$rootPath\Assets" -ItemType Directory -Force | Out-Null
+    }
+    # Copy Assets contents, but keep symbolic links
+    robocopy "$sourcePath\Assets" "$rootPath\Assets" /E /XJ /NFL /NDL
+}
+
+# Then copy the Packages folder
+if (Test-Path "$sourcePath\Packages") {
+    Write-Host "Moving Packages folder..."
+    if (-not (Test-Path "$rootPath\Packages")) {
+        New-Item -Path "$rootPath\Packages" -ItemType Directory -Force | Out-Null
+    }
+    # Copy Packages contents
+    robocopy "$sourcePath\Packages" "$rootPath\Packages" /E /NFL /NDL
+}
+
+# Copy ProjectSettings folder
+if (Test-Path "$sourcePath\ProjectSettings") {
+    Write-Host "Moving ProjectSettings folder..."
+    if (-not (Test-Path "$rootPath\ProjectSettings")) {
+        New-Item -Path "$rootPath\ProjectSettings" -ItemType Directory -Force | Out-Null
+    }
+    # Copy ProjectSettings contents
+    robocopy "$sourcePath\ProjectSettings" "$rootPath\ProjectSettings" /E /NFL /NDL
+}
+
+# Also copy any other files in the root of the project
+Get-ChildItem -Path "$sourcePath" -File | ForEach-Object {
+    Write-Host "Moving file: $($_.Name)..."
+    Copy-Item -Path $_.FullName -Destination $rootPath -Force
+}
+
+# Delete the source directory
+Remove-Item -Path $sourcePath -Recurse -Force -ErrorAction SilentlyContinue
+
+# Fix the symbolic link for Samples
+if (Test-Path "$rootPath\Assets\Samples") {
+    Remove-Item -Path "$rootPath\Assets\Samples" -Force -ErrorAction SilentlyContinue
+}
+Set-Location "$rootPath\Assets"
+cmd /c mklink /D "Samples" "..\Packages\$($InputScope.ToLower())$($InputName.ToLower())\Samples~"
+Set-Location $rootPath
+
+Write-Host "All project files have been moved to the root directory."
+
 Remove-Item -Path "InitializeTemplate.ps1"
