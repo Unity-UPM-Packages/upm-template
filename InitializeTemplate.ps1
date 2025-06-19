@@ -151,4 +151,40 @@ Get-ChildItem -Path "*"-File -Recurse -Exclude $excludes | ForEach-Object -Proce
 Set-Location ".\$InputScope$InputName\Assets"
 cmd /c mklink /D "Samples" "..\..\$InputScope$InputName\Packages\$($InputScope.ToLower())$($InputName.ToLower())\Samples~"
 Set-Location "..\.."
+
+# Update CI.yml with new values
+$ciFilePath = ".\.github\workflows\CI.yml"
+if (Test-Path $ciFilePath) {
+  Write-Host "Updating CI.yml..."
+  $updated = $false
+  
+  $fileContent = Get-Content $ciFilePath -Raw
+
+  # Update PACKAGE_PATH
+  $oldPackagePath = "ProjectScope.ProjectName/Packages/projectscope.projectname"
+  $newPackagePath = "$InputScope$InputName/Packages/$($InputScope.ToLower())$($InputName.ToLower())"
+  
+  if ($fileContent -match [regex]::Escape($oldPackagePath)) {
+    $fileContent = $fileContent -replace [regex]::Escape($oldPackagePath), $newPackagePath
+    $updated = $true
+    Write-Host "Updated PACKAGE_PATH from '$oldPackagePath' to '$newPackagePath'"
+  }
+
+  # Add more CI.yml replacements here if needed in the future
+  # Example:
+  # if ($fileContent -cmatch $ProjectName) {
+  #   $fileContent = $fileContent -creplace $ProjectName, $InputName
+  #   $updated = $true
+  # }
+
+  if ($updated) {
+    $fileContent | Set-Content $ciFilePath -NoNewline
+    Write-Host "CI.yml updated successfully"
+  }
+  # No message when nothing to update - this is normal for re-runs
+}
+else {
+  Write-Host "Warning: CI.yml file not found at $ciFilePath"
+}
+
 Remove-Item -Path "InitializeTemplate.ps1"
