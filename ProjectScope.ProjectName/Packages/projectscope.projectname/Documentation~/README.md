@@ -15,8 +15,8 @@ The recommended installation method is though the unity package manager.
 - Select the `Package Manager`
 ![scoped-registries](https://europe1.discourse-cdn.com/unity/original/3X/8/6/86d23e43ae16b26badf2072280c9d4cbe03d568e.png)
 - Add the package registry:
-  - Name: `TripSoft`
-  - URL: `https://verdaccio.tripdev.io`
+  - Name: `What ever you want`
+  - URL: `https://verdaccio.thelegends.io.vn/`
   - Scope(s):
     - `projectscope-x`
 - Open the Unity Package Manager window
